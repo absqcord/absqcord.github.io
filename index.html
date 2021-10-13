@@ -1,0 +1,433 @@
+<!DOCTYPE HTML>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet'>
+        <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+        <title>AbsqCord v3</title>
+  <style>
+        @font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/ubuntu/v15/4iCs6KVjbNBYlgoKcg72j00.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+      
+      @font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/roboto/v29/KFOmCnqEu92Fr1Mu72xKOzY.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+      
+      ::-webkit-scrollbar {
+  width: 10px;
+}
+
+ 
+::-webkit-scrollbar-thumb {
+  background: #262626; 
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2e2e2e; 
+}
+
+
+    </style>
+    </head>
+  
+
+    <body style="background-color:#1a1a1a">
+<div style="text-align:center">
+        <h1 id="test" style="font-family:'Ubuntu'; color:#e6e6e6">AbsqCord Client v3</h1>
+        <input id="token" style="border:none; border-radius:5px;outline:none;background-color:#262626;color:white;font-family:'Ubuntu'; height:25px; width:500px;" placeholder="Token..." type="text"></input>
+        <button id="showhide" onclick="hideshow()" onmouseover="changecolour3()" onmouseleave="revertcolour3()" style="border:0; margin:5px; border-radius:5px; cursor:pointer; background-color:#262626; color:white; height:25px; font-family:'Ubuntu'">Show/Hide</button>
+        <button id="validatetoken" onclick="validate()" onmouseover="changecolour4()" onmouseleave="revertcolour4()" style="border:0; margin:5px; border-radius:5px; cursor:pointer; background-color:#262626; color:white; height:25px; font-family:'Ubuntu'">Validate Token</button>
+        <button id="getchannels" onclick="createguildbuttons()" onmouseover="changecolour5()" onmouseleave="revertcolour5()" style="border:0; margin:5px; border-radius:5px; cursor:pointer; background-color:#262626; color:white; height:25px; font-family:'Ubuntu'">Log Servers</button><br><br>
+<hr noshade="" style="border-top: 1px solid white; width:50%; size="1px">
+</div>
+<div style="text-align:center">
+        <label id="guildbuttons" style="font-family:'Ubuntu'; color:#e6e6e6"></label>
+        <label id="channelbuttons" style="font-family:'Ubuntu'; color:#e6e6e6"></label>
+</div>
+<hr noshade="" style="border-top: 1px solid white; width:50%; margin:left size="1px">
+<div style="text-align:center">
+<input id="contents" style="border:none; border-radius:5px;outline:none;background-color:#262626;color:white;font-family:'Ubuntu'; height:25px; width:300px;" placeholder="Enter a message..." type="text"></input>
+        <button onmouseover="changecolour2()" onmouseleave="revertcolour2()" id="send" onclick="sendmessage()" style="height:25px;cursor:pointer;background-color:#262626; margin:5px; border-radius:5px; border:none; color:white; font-family:'Ubuntu'">Send</button><br><br>
+</div>
+<label style="color:white; font-family:'Roboto'; font-size:13px" id="messages"></label><br>
+ <script>
+let result = "";
+let channelname = "";
+           function send(test){
+var xhr2 = new XMLHttpRequest();
+xhr2.open("GET", "https://discord.com/api/v9/channels/" + test.id, true);
+xhr2.setRequestHeader('Content-Type', 'application/json');
+xhr2.setRequestHeader('Authorization', document.getElementById("token").value);
+xhr2.onreadystatechange = function() {
+    if (xhr2.readyState == XMLHttpRequest.DONE) {
+        
+var obj2 = JSON.parse(xhr2.responseText);
+channelname = obj2.name;
+channelname = obj2.name;
+channelname = obj2.name;
+    };
+    }
+
+xhr2.send();
+
+
+var xhr = new XMLHttpRequest();
+xhr.open("GET", "https://discord.com/api/v9/channels/" + test.id + "/messages?limit=100", true);
+xhr.setRequestHeader('Content-Type', 'application/json');
+xhr.setRequestHeader('Authorization', document.getElementById("token").value);
+xhr.onreadystatechange = function() {
+    if (xhr.readyState == XMLHttpRequest.DONE) {
+result = "";    
+var obj = JSON.parse(xhr.responseText);
+for (var i=0; i<obj.length; i++) {
+    
+    let embeds = ""
+    let videoembeds = "";
+    var embedslist = obj[i].embeds;
+    for (var n=0; n<embedslist.length; n++) {
+        if(embedslist[n].type == undefined)
+        {
+            embeds ="";
+        }
+        else{
+            var author = "";
+            var footer = "";
+            var authormsg = "";
+            var footermsg = "";
+            if(embedslist[n].author == undefined)
+            {
+                authormsg = "undefined"
+            }
+            else
+            {
+                author =  embedslist[n].author
+                authormsg = author.name
+            }
+             if(embedslist[n].footer == undefined)
+            {
+                footermsg = "undefined"
+            }
+            else
+            {
+                footer =  embedslist[n].footer
+                footermsg = footer.text
+                
+            }
+            embeds = embeds + "<br><font color=#11b9c2><b>EMBED</b><br>Author: <i>" + authormsg + "</i><br>Title: <i>" + embedslist[n].title + "</i><br>Description: <i>" + embedslist[n].description + "</i><br>Footer: <i>" + footermsg + "</i><br>Media: <i>" + embedslist[n].url + "</i><br></font>";
+             if(embedslist[n].url != null){
+            if(embedslist[n].type = "video" && embedslist[n].url.includes("youtube"))
+               {
+                   embeds = "";
+                   let videourl = embedslist[n].url
+                   var link = videourl.substring(videourl.length - 11)
+                   var finalurl = "https://www.youtube.com/embed/" + link
+            videoembeds = videoembeds + "<br><font color=#11b9c2><b>YOUTUBE VIDEO</b><br>Title: <i>" + embedslist[n].title + "</i><br>Description: <i>" + embedslist[n].description + "</i><br></font>" + "<iframe style=\"width:350px;height:240px\" src=\"" + finalurl + "\"></iframe>";
+               }
+        }
+        }
+    }
+    
+    
+     let mentions = ""
+    var mentionlist = obj[i].mentions;
+    for (var b=0; b<mentionlist.length; b++) {
+        if(mentionlist[b].username == undefined)
+        {
+            mentions ="";
+        }
+        else{
+            mentions = "<font color=#3deb54>[Mentions: @" + mentionlist[b].username + "#" + mentionlist[b].discriminator + "]</font>"
+        }
+    }
+        
+    let attachments = ""
+    var things = obj[i].attachments;
+    for (var x=0; x<things.length; x++) {
+        if(things[x].url == undefined)
+        {
+            attachments ="";
+        }
+        else{
+            attachments = "<br><img style=\"max-height:400px;max-width:500px\" src=\"" + things[x].url  + "\">"
+        }
+        
+    
+        
+        if(things[x].content_type == "video/mp4")
+        {
+            
+           attachments = "<br><video width=\"320\" height=\"240\" controls> <source src=\"" + things[x].proxy_url + "\"type=\"video/mp4\"></video>"
+            
+            //attachments = "<br><video width=\"500\" height=\"345\" src=\"" + things[x].proxy_url + "\"/>"
+
+        }
+        
+        if(things[x].content_type == "video/quicktime")
+        {
+            attachments = " <i><font color=#d9d9d9>[<a style=\"color:#d9d9d9\" href=\"" + things[x].url + "\">" + things[x].filename + "</a>]</font></i>"
+        }
+    }
+    var time = obj[i].timestamp.replace(/T/g, ' ');
+   result = result + "<b><font color=#b51f1f>" + obj[i].author.username + "#" + obj[i].author.discriminator + "</font></b><font color=#242abf> [#" + channelname + "] </font>" + mentions + "<font color=#949494>(" + time.substring(0, time.length - 9) + ")</font> <br>" + obj[i].content + attachments + embeds + videoembeds + "<br><br>";
+}
+
+
+document.getElementById("messages").innerHTML = "Loading...";
+document.getElementById("messages").innerHTML = "<i><font color=#d9d9d9>Fetched last 100 messages [Newest to Oldest]</font></i><br><br>" + result
+document.title = "Chatting in #" + channelname; 
+    };
+    }
+
+xhr.send();
+
+
+           }
+
+           function sendmessage(){
+
+               var xhr = new XMLHttpRequest();
+xhr.open("POST", "https://discord.com/api/v9/channels/" + document.getElementById("channelid").value + "/messages", true);
+xhr.setRequestHeader('Content-Type', 'application/json');
+xhr.setRequestHeader('Authorization', document.getElementById("token").value);
+xhr.onreadystatechange = function() {
+    if (xhr.readyState == XMLHttpRequest.DONE) {
+        send();
+    };
+    }
+
+xhr.send(JSON.stringify({
+    content: document.getElementById("contents").value,
+    tts: false
+}));
+
+           
+
+
+               
+           }
+
+          function changecolour(){
+
+              document.getElementById("original").style.backgroundColor = "#2e2e2e";
+
+           }
+
+           function revertcolour(){
+
+               document.getElementById("original").style.backgroundColor = "#262626";
+
+           }
+
+           function changecolour2(){
+
+              document.getElementById("send").style.backgroundColor = "#2e2e2e";
+
+           }
+
+           function revertcolour2(){
+
+               document.getElementById("send").style.backgroundColor = "#262626";
+
+           }
+
+           function changecolour3(){
+
+              document.getElementById("showhide").style.backgroundColor = "#2e2e2e";
+
+           }
+
+           function revertcolour3(){
+
+               document.getElementById("showhide").style.backgroundColor = "#262626";
+
+           }
+
+           function changecolour4(){
+
+              document.getElementById("validatetoken").style.backgroundColor = "#2e2e2e";
+
+           }
+
+           function revertcolour4(){
+
+               document.getElementById("validatetoken").style.backgroundColor = "#262626";
+
+           }
+     
+     function changecolour5(){
+
+              document.getElementById("getchannels").style.backgroundColor = "#2e2e2e";
+
+           }
+
+           function revertcolour5(){
+
+               document.getElementById("getchannels").style.backgroundColor = "#262626";
+
+           }
+     
+      function changecolour6(){
+
+              document.getElementById("getguilds").style.backgroundColor = "#2e2e2e";
+
+           }
+
+           function revertcolour6(){
+
+               document.getElementById("getguilds").style.backgroundColor = "#262626";
+
+           }
+
+               let state = false;
+           function hideshow(){
+  if(state == false){
+    state = true
+    document.getElementById('token').type = 'password';
+  }
+  else if(state == true){
+    state = false
+    document.getElementById('token').type = 'text';
+  }
+           }
+
+           function validate(){
+
+var xhr2 = new XMLHttpRequest();
+xhr2.open("GET", "https://discord.com/api/v9/users/@me", true);
+xhr2.setRequestHeader('Content-Type', 'application/json');
+xhr2.setRequestHeader('Authorization', document.getElementById("token").value);
+xhr2.onreadystatechange = function() {
+    if (xhr2.readyState == XMLHttpRequest.DONE) {
+        
+var obj2 = JSON.parse(xhr2.responseText);
+console.log(obj2)
+alert("Logged in as " + obj2.username + "#" + obj2.discriminator)
+    };
+    }
+
+xhr2.send();
+
+           }
+     
+     let channellist = "";
+     let serverlist = "";
+     function getchannels(guild){
+         var getchannelsxhr = new XMLHttpRequest();
+getchannelsxhr.open("GET", "https://discord.com/api/v9/guilds/" + guild + "/channels", true);
+getchannelsxhr.setRequestHeader('Content-Type', 'application/json');
+getchannelsxhr.setRequestHeader('Authorization', document.getElementById("token").value);
+getchannelsxhr.onreadystatechange = function() {
+    if (getchannelsxhr.readyState == XMLHttpRequest.DONE) {
+var getchannelsobj = JSON.parse(getchannelsxhr.responseText);
+ console.log("ALL TEXT CHANNELS FOR GUILD ID " + guild)
+ console.log(" ")
+console.log("======================")
+for (var y=0; y<getchannelsobj.length; y++) {
+if(getchannelsobj[y].type == 4 || getchannelsobj[y].type == 2)
+{
+
+}
+else
+{
+console.log(getchannelsobj[y].name + " || " + getchannelsobj[y].id);
+}
+}
+console.log("======================");
+            console.log(" ")
+    console.log(" ")
+}
+}
+getchannelsxhr.send();
+         
+         
+         
+     }
+
+
+     
+     function getguilds(){
+         
+         var getguildsxhr = new XMLHttpRequest();
+getguildsxhr.open("GET", "https://discord.com/api/v9/users/@me/guilds", true);
+getguildsxhr.setRequestHeader('Content-Type', 'application/json');
+getguildsxhr.setRequestHeader('Authorization', document.getElementById("token").value);
+getguildsxhr.onreadystatechange = function() {
+    if (getguildsxhr.readyState == XMLHttpRequest.DONE) {
+       console.log("ALL GUILDS AND CHANNELS FOR CURRENT USER");
+var getguildsobj = JSON.parse(getguildsxhr.responseText);
+for (var n=0; n<getguildsobj.length; n++) {
+getchannels(getguildsobj[n].id);
+
+}
+
+
+}
+}
+getguildsxhr.send();
+     
+     }    
+     
+     function createchannelbuttons(men){
+let result = "";
+let channelinfo = "";
+var getchannelsxhr = new XMLHttpRequest();
+getchannelsxhr.open("GET", "https://discord.com/api/v9/guilds/" + men.id + "/channels", true);
+getchannelsxhr.setRequestHeader('Content-Type', 'application/json');
+getchannelsxhr.setRequestHeader('Authorization', document.getElementById("token").value);
+getchannelsxhr.onreadystatechange = function() {
+    if (getchannelsxhr.readyState == XMLHttpRequest.DONE) {
+var getchannelsobj = JSON.parse(getchannelsxhr.responseText);
+for (var y=0; y<getchannelsobj.length; y++) {
+if(getchannelsobj[y].type == 4 || getchannelsobj[y].type == 2)
+{
+
+}
+else
+{
+channelinfo = channelinfo + "<button style=\"border:0; margin:5px; border-radius:5px; cursor:pointer; background-color:#262626; color:white; height:25px; font-family:\"Segoe UI\"\" onclick=\"send(this)\" id=\"" + getchannelsobj[y].id + "\">#" + getchannelsobj[y].name +"</button>"
+}
+}
+result = result + channelinfo;
+document.getElementById("channelbuttons").innerHTML = result + "<br><br>"
+}
+}
+getchannelsxhr.send();
+ }      
+     
+     function createguildbuttons(){
+let result = "";
+let channelinfo = "";
+var getchannelsxhr = new XMLHttpRequest();
+getchannelsxhr.open("GET", "https://discord.com/api/v9/users/@me/guilds", true);
+getchannelsxhr.setRequestHeader('Content-Type', 'application/json');
+getchannelsxhr.setRequestHeader('Authorization', document.getElementById("token").value);
+getchannelsxhr.onreadystatechange = function() {
+    if (getchannelsxhr.readyState == XMLHttpRequest.DONE) {
+var getchannelsobj = JSON.parse(getchannelsxhr.responseText);
+for (var y=0; y<getchannelsobj.length; y++) {
+channelinfo = channelinfo + "<button style=\"border:0; margin:5px; border-radius:5px; cursor:pointer; background-color:#262626; color:white; height:25px; font-family:\"Segoe UI\"\" onclick=\"createchannelbuttons(this)\" id=\"" + getchannelsobj[y].id + "\"><b>" + getchannelsobj[y].name +"</b></button>"
+}
+result = result + channelinfo;
+console.log(result)
+document.getElementById("guildbuttons").innerHTML = result + "<br><br>"
+}
+}
+getchannelsxhr.send();
+     }
+
+        </script>
+
+    </body>
+
+</html>
