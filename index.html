@@ -220,7 +220,7 @@ xhr.setRequestHeader('Content-Type', 'application/json');
 xhr.setRequestHeader('Authorization', document.getElementById("token").value);
 xhr.onreadystatechange = function() {
     if (xhr.readyState == XMLHttpRequest.DONE) {
-        send();
+        send(this);
     };
     }
 
