@@ -58,14 +58,14 @@
 <hr noshade="" style="border-top: 1px solid white; width:50%; margin:left size="1px">
 <div style="text-align:center">
 <input id="contents" style="border:none; border-radius:5px;outline:none;background-color:#262626;color:white;font-family:'Ubuntu'; height:25px; width:300px;" placeholder="Enter a message..." type="text"></input>
-        <button onmouseover="changecolour2(this)" onmouseleave="revertcolour2(this)" id="send" onclick="sendmessage(this)" style="height:25px;cursor:pointer;background-color:#262626; margin:5px; border-radius:5px; border:none; color:white; font-family:'Ubuntu'">Send</button><br><br>
+        <button onmouseover="changecolour2(this)" name="thing1" onmouseleave="revertcolour2(this)" id="send" onclick="sendmessage(this)" style="height:25px;cursor:pointer;background-color:#262626; margin:5px; border-radius:5px; border:none; color:white; font-family:'Ubuntu'">Send</button><br><br>
 </div>
 <label style="color:white; font-family:'Roboto'; font-size:13px" id="messages"></label><br>
  <script>
 let result = "";
 let channelname = "";
            function send(test){
- test.id = test.id
+document.getElementsByTagName('thing1').id = test.id
 var xhr2 = new XMLHttpRequest();
 xhr2.open("GET", "https://discord.com/api/v9/channels/" + test.id, true);
 xhr2.setRequestHeader('Content-Type', 'application/json');
