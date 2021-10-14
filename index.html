@@ -95,6 +95,7 @@ for (var i=0; i<obj.length; i++) {
     let embeds = ""
     let videoembeds = "";
      let tenorembeds = "";
+    let discordembeds = "";
     var embedslist = obj[i].embeds;
     for (var n=0; n<embedslist.length; n++) {
         if(embedslist[n].type == undefined)
@@ -135,11 +136,17 @@ for (var i=0; i<obj.length; i++) {
                    var finalurl = "https://www.youtube.com/embed/" + link
             videoembeds = videoembeds + "<br><font color=#11b9c2><b>YOUTUBE VIDEO</b><br>Title: <i>" + embedslist[n].title + "</i><br>Description: <i>" + embedslist[n].description + "</i><br></font>" + "<iframe style=\"width:350px;height:240px; border:none\" src=\"" + finalurl + "\"></iframe>";
                }
-                 
                   if(embedslist[n].type = "gifv" && embedslist[n].url.includes("tenor"))
                {
                    embeds = "";
             tenorembeds = tenorembeds + "<br><font color=#11b9c2><b>TENOR GIF</b><br></font>" + "<iframe style=\"width:350px;height:240px; border:none\" src=\"" + embedslist[n].video.url + "\"></iframe>";
+               }
+                 
+                  if(embedslist[n].type = "video" && embedslist[n].url.includes("https://cdn.discordapp.com/attachments"))
+               {
+                   embeds = "";
+            discordembeds = discordembeds + "<br><font color=#11b9c2><b>DISCORD VIDEO</b><br></font>" + "<video width=\"320\" height=\"240\" controls> <source src=\"" + embedslist[n].video.proxy_url + "\"type=\"video\"></video>"
+
                }
         }
         }
@@ -186,7 +193,7 @@ for (var i=0; i<obj.length; i++) {
         }
     }
     var time = obj[i].timestamp.replace(/T/g, ' ');
-   result = result + "<b><font color=#b51f1f>" + obj[i].author.username + "#" + obj[i].author.discriminator + "</font></b><font color=#242abf> [#" + channelname + "] </font>" + mentions + "<font color=#949494>(" + time.substring(0, time.length - 9) + ")</font> <br>" + obj[i].content + attachments + embeds + videoembeds + tenorembeds + "<br><br>";
+   result = result + "<b><font color=#b51f1f>" + obj[i].author.username + "#" + obj[i].author.discriminator + "</font></b><font color=#242abf> [#" + channelname + "] </font>" + mentions + "<font color=#949494>(" + time.substring(0, time.length - 9) + ")</font> <br>" + obj[i].content + attachments + embeds + videoembeds + tenorembeds + discordembeds + "<br><br>";
 }
 
 
