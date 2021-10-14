@@ -65,7 +65,7 @@
 let result = "";
 let channelname = "";
            function send(test){
- document.getElementById("send").id = test.id
+ test.id = test.id
 var xhr2 = new XMLHttpRequest();
 xhr2.open("GET", "https://discord.com/api/v9/channels/" + test.id, true);
 xhr2.setRequestHeader('Content-Type', 'application/json');
