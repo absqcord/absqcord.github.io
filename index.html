@@ -181,13 +181,16 @@ for (var i=0; i<obj.length; i++) {
         if(things[x].content_type == "video/mp4")
         {
             
-           attachments = "<br><video width=\"320\" height=\"240\" controls> <source src=\"" + things[x].proxy_url + "\"type=\"video/mp4\"></video>"
-            
-            //attachments = "<br><video width=\"500\" height=\"345\" src=\"" + things[x].proxy_url + "\"/>"
+           attachments = "<br><video width=\"320\" height=\"240\" controls> <source src=\"" + things[x].proxy_url + "\"type=\"video/mp4\"></video>"          
 
         }
         
         if(things[x].content_type == "video/quicktime")
+        {
+            attachments = " <i><font color=#d9d9d9>[<a style=\"color:#d9d9d9\" href=\"" + things[x].url + "\">" + things[x].filename + "</a>]</font></i>"
+        }
+        
+         if(things[x].content_type == "text/plain; charset=utf-8")
         {
             attachments = " <i><font color=#d9d9d9>[<a style=\"color:#d9d9d9\" href=\"" + things[x].url + "\">" + things[x].filename + "</a>]</font></i>"
         }
