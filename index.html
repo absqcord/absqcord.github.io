@@ -215,7 +215,7 @@ xhr.send();
            function sendmessage(){
 
                var xhr = new XMLHttpRequest();
-xhr.open("POST", "https://discord.com/api/v9/channels/" + document.getElementById("send").id + "/messages", true);
+xhr.open("POST", "https://discord.com/api/v9/channels/" + this.id + "/messages", true);
 xhr.setRequestHeader('Content-Type', 'application/json');
 xhr.setRequestHeader('Authorization', document.getElementById("token").value);
 xhr.onreadystatechange = function() {
@@ -249,13 +249,13 @@ xhr.send(JSON.stringify({
 
            function changecolour2(){
 
-              document.getElementById("send").style.backgroundColor = "#2e2e2e";
+              this.style.backgroundColor = "#2e2e2e";
 
            }
 
            function revertcolour2(){
 
-               document.getElementById("send").style.backgroundColor = "#262626";
+               this.style.backgroundColor = "#262626";
 
            }
 
